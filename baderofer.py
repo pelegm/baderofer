@@ -27,7 +27,10 @@ class Elections(object):
         seats = dict((p, self.seats * elections[p] / general_indicator)
                      for p in passed)
         agreements = set(ag for ag in self.agreements if ag <= passed)
-        ag_union = frozenset.union(*(ag for ag in agreements))
+        if agreements:
+            ag_union = frozenset.union(*(ag for ag in agreements))
+        else:
+            ag_union = frozenset()
         lists = set(agreements) |\
             set(frozenset([p]) for p in passed if not p in ag_union)
         list_votes = lambda l: sum(elections[p] for p in l)
